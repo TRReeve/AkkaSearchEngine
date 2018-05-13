@@ -2,12 +2,6 @@ import akka.actor.{Actor, ActorPath, ActorSystem, PoisonPill, Props}
 import scala.collection.mutable.ListBuffer
 import java.net.URL
 
-case class StartScraping(url: URL)
-case class ScrapeRequest(url: URL)
-case class IndexRequest(content: PageContent)
-case class ScrapeResponse(url:URL,list: List[URL])
-case class PageContent(url:URL,content:List[String],links:List[URL])
-case class SearchRequest(search:List[String])
 
 //Parent Actor for orchestrating the crawl and search.
 class Handler (system:ActorSystem) extends Actor {
@@ -36,9 +30,11 @@ class Handler (system:ActorSystem) extends Actor {
 
       actorslist -= toremove
 
-    case "searchprompt" =>
+    case SearchRequest(strings) =>
 
-      initsearchactor()
+      val searchactor = context actorOf Props(new Search(self,indexer))
+      searchactor ! SearchRequest(strings)
+
   }
   def scrapecontent(url: URL): Unit = {
 
@@ -60,20 +56,5 @@ class Handler (system:ActorSystem) extends Actor {
 
   }
 
-
-}
-
-object Main extends App {
-
-  val system = ActorSystem()
-
-  val handler = system.actorOf(Props(new Handler(system)))
-
-  val url = new URL("https://www.nytimes.com/?WT.z_jog=1&hF=t&vS=undefined")
-
-  //initiate actor system
-  handler ! StartScraping(url)
-
-  handler ! "searchprompt"
 
 }

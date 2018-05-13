@@ -1,4 +1,6 @@
-import akka.actor.{ActorRef, ActorSystem,Actor}
+import akka.actor.{Actor, ActorRef, ActorSystem}
+import akka.http.scaladsl.model.HttpRequest
+
 import scala.io.StdIn.readLine
 
 class Search(supervisor:ActorRef,index:ActorRef) extends Actor{
@@ -8,6 +10,9 @@ class Search(supervisor:ActorRef,index:ActorRef) extends Actor{
   val searchstring = searchquery.split(" ").toList
 
     self ! SearchRequest(searchstring)
+
+
+
 
 
   def receive:Receive = {

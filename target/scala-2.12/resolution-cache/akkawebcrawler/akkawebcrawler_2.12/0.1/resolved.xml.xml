@@ -4,7 +4,7 @@
 		module="akkawebcrawler_2.12"
 		revision="0.1"
 		status="integration"
-		publication="20180512134726"
+		publication="20180513163321"
 	>
 		<description>
 		AkkaWebCrawler
@@ -35,5 +35,7 @@
 		<dependency org="com.typesafe.akka" name="akka-actor_2.12" rev="2.5.12" conf="compile->default(compile)"/>
 		<dependency org="org.jsoup" name="jsoup" rev="1.8.3" conf="compile->default(compile)"/>
 		<dependency org="commons-validator" name="commons-validator" rev="1.5+" conf="compile->default(compile)"/>
+		<dependency org="com.typesafe.akka" name="akka-http_2.12" rev="10.1.1" conf="compile->default(compile)"/>
+		<dependency org="com.typesafe.akka" name="akka-stream_2.12" rev="2.5.12" conf="compile->default(compile)"/>
 	</dependencies>
 </ivy-module>
