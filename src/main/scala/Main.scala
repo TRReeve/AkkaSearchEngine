@@ -1,13 +1,16 @@
 import java.net.URL
 
 import akka.actor.{ActorSystem, Props}
+import akka.actor.ActorSystem
 import akka.http.javadsl.server.Route
 import akka.http.scaladsl.Http
-import akka.http.scaladsl.common._
+import akka.http.scaladsl.model.Uri.Query
+import akka.http.scaladsl.model._
 import akka.http.scaladsl.server.Directives._
 import akka.stream.ActorMaterializer
 
 import scala.io.StdIn
+
 
 case class StartScraping(url: URL)
 case class ScrapeRequest(url: URL)
@@ -16,12 +19,7 @@ case class ScrapeResponse(url:URL,list: List[URL])
 case class PageContent(url:URL,content:List[String],links:List[URL])
 case class SearchRequest(search:List[String])
 
-import akka.actor.ActorSystem
-import akka.http.scaladsl.Http
-import akka.http.scaladsl.model._
-import akka.http.scaladsl.server.Directives._
-import akka.stream.ActorMaterializer
-import scala.io.StdIn
+
 
 object WebServer {
   def main(args: Array[String]) {
@@ -38,10 +36,8 @@ object WebServer {
     handler ! StartScraping(url)
 
     val route =
-      path("hello") {
-        get {
-          complete(HttpEntity(ContentTypes.`text/html(UTF-8)`, "<h1>Say hello to akka-http</h1>"))
-        }
+      parameters('query) { (query) =>
+        complete(s"The query is '$query")
       }
 
     val bindingFuture = Http().bindAndHandle(route, "localhost", 8080)
