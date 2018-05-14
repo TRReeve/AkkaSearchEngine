@@ -1,9 +1,9 @@
-import java.net.URL
+import java.net.URI
 import akka.actor.{Actor,ActorRef}
 
 class Indexer (supervisor: ActorRef) extends Actor {
 
-  var store = scala.collection.mutable.Map.empty[String, List[URL]]
+  var store = scala.collection.mutable.Map.empty[String, List[URI]]
 
   //receives scraping content and inverts it
   def receive: Receive = {
@@ -15,10 +15,10 @@ class Indexer (supervisor: ActorRef) extends Actor {
 
         if (store contains (record)) {
 
-          store(record) = pageurl :: store(record).distinct
+          store(record) = pageurl :: store(record)
         }
         else {
-          store += (record -> List(pageurl).distinct)
+          store += (record -> List(pageurl))
 
         }
       }
@@ -26,16 +26,22 @@ class Indexer (supervisor: ActorRef) extends Actor {
     //makes a search on the inverted index store
     case SearchRequest(searchstring) =>
 
-      val keywordget = (keyword: String) => {store.get(keyword) }
+      println(searchstring.size)
 
-      val result = searchstring.map(keywordget)
+      val fnlistget = (i:String) => {store.get(i.toLowerCase)}
 
-      println(result)
+      //flatten twice for multiple keywords
+      val listlists = searchstring.map(fnlistget).distinct.flatten.flatten
 
-      supervisor ! "searchprompt"
 
-      sender() ! result
+      val summary = listlists.groupBy(i=>i).mapValues(_.size)
 
+      //receive search request object and retrieve from store
+
+      val indexsize = store.size
+
+      println(s"searched $indexsize index entries searched returned for ${searchstring.size} keywords ")
+      println(summary)
 
   }
 

@@ -1,23 +1,20 @@
 import akka.actor.{Actor, ActorRef, ActorSystem}
-import akka.http.scaladsl.model.HttpRequest
-
-import scala.io.StdIn.readLine
 
 class Search(supervisor:ActorRef,index:ActorRef) extends Actor{
 
-  var searchquery = readLine("what term are looking for?: ")
+  def receive: Receive = {
 
-  val searchstring = searchquery.split(" ").toList
+    case SearchRequest(searchstring) =>
 
-    self ! SearchRequest(searchstring)
+      search(searchstring)
+      supervisor ! "newsearch"
+  }
 
+  def search(search:List[String]):Unit = {
 
+      println(s"Searching for $search")
+      val result = index ! SearchRequest(search)
 
-
-
-  def receive:Receive = {
-  case SearchRequest(string) => println(s"Searching for $string")
-      index ! SearchRequest(string)
 
   }
 
