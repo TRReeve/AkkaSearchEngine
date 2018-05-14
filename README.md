@@ -13,7 +13,7 @@ To Run
 
 Todos
 
-- Implement the search function through an akka http web service and return html document with search results
+- Implement the search function through an akka http web service and return html document with search results instead of data map.
 
 - Store the inverted index to a Hadoop or cassandra cluster and crawl every major news website. 
 
@@ -22,3 +22,5 @@ Todos
 - Connect web front end to the akka service.
 
 - Handle dead-letter issues in akka actors on shutdown. 
+
+- more sophisticated ranking than number of hits of keywords
