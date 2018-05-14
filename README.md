@@ -1,5 +1,5 @@
 # AkkaSearchEngine
-An concurrent website crawler and content indexer and search engine concept application using Akka actor models. 
+An concurrent website crawler and content indexer and search engine concept application using Akka actor models to enable both concurrent tasking of scraping and indexing and search but ideally concurrent scalable useage as well. 
 
 
 To Run 
