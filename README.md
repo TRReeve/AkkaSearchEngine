@@ -6,7 +6,7 @@ To Run
 
 1. Download package 
 
-2. cd into the package directory and execute sbt run 
+2. cd into the package directory and execute sbt run (you can run in docker too but akka logging hasn't been disabled yet
 
 3. Follow instructions on the page 
 
@@ -20,3 +20,5 @@ Todos
 - Return the sentences containing the sentences in which search terms appear on page. 
 
 - Connect web front end to the akka service.
+
+- Handle dead-letter issues in akka actors on shutdown. 
